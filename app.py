@@ -2,8 +2,8 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import torch
 from transformers import BertTokenizer, BertForSequenceClassification
-import os  # ✅ Added this
-
+import os
+  
 model_path = "mednarr10k_model_02"
 
 # Correct tokenizer/model pair
@@ -29,5 +29,5 @@ def predict():
     return jsonify({"prediction": prediction})
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))  # ✅ Uses Render's assigned port
-    app.run(host="0.0.0.0", port=port)
+    port = int(os.environ.get("PORT", 5000))  
+    run.run(host="0.0.0.0", port=port)
