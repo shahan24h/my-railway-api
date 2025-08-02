@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import torch
 from transformers import BertTokenizer, BertForSequenceClassification
+import os  # ✅ Added this
 
 model_path = "mednarr10k_model_02"
 
@@ -11,7 +12,6 @@ model = BertForSequenceClassification.from_pretrained(model_path)
 
 app = Flask(__name__)
 CORS(app)
-
 
 @app.route("/predict", methods=["POST"])
 def predict():
@@ -26,10 +26,8 @@ def predict():
         outputs = model(**inputs)
         prediction = torch.argmax(outputs.logits, dim=1).item()
 
-    response = jsonify({"prediction": prediction}); response.headers["Content-Type"] = "application/json"; return response
+    return jsonify({"prediction": prediction})
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))  # Railway will set PORT
+    port = int(os.environ.get("PORT", 5000))  # ✅ Uses Render's assigned port
     app.run(host="0.0.0.0", port=port)
-
-
